@@ -1,0 +1,47 @@
+<div class="text-center">
+  <h1 class="display-4">Órdenes</h1>
+  <p>Todas las órdenes que ha registrado en el sistema</p>
+</div>
+
+<div class="text-center mt-4 mb-4">
+  <a routerLink="/order/new-order" class="btn btn-primary text-light btn-lg">Crear nueva orden</a>
+</div>
+
+<!-- <order-loading-spinne  r *ngIf="OrderWasFound()"></order-loading-spinner> -->
+<table class="table">
+  <thead>
+    <tr>
+      <th># Orden</th>
+      <th style="width:250px;">Cliente</th>
+      <th style="width:140px;">Tipo de pago</th>
+      <th style="width:100px;">Estado</th>
+      <th style="width:140px;" class="text-right">Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (item of currentOrders()?.items; track $index) {
+    <tr>
+      <td>
+        <a [routerLink]="['/order/details' , item.orderId]">{{ item.orderNumber }}</a>
+      </td>
+      <td>{{ item.clientId }}</td>
+      <td>{{ actionPayment[item.paymentType] }}</td>
+      <td>{{ actionStatus[item.status!]}}</td>
+      <td class="text-right">{{ item.total }}</td>
+    </tr>
+    }
+  </tbody>
+</table>
+
+
+<nav aria-label="...">
+  <ul class="pagination">
+    <li class="page-item ">
+      <button class="btn btn-primary" (click)="previousPage()" [disabled]="isClickedPrevios()">Previos</button>
+    </li>
+
+    <li class="page-item">
+      <button class="btn btn-primary" (click)="nextPage()" [disabled]="isClickedNext()">Next</button>
+    </li>
+  </ul>
+</nav>

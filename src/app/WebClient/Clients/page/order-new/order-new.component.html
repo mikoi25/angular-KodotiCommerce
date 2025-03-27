@@ -1,0 +1,123 @@
+@if (!isLoading) {
+
+<h1 class="display-4">Nueva Orden</h1>
+<p>Creación de una nueva orden de compra</p>
+
+<form [formGroup]="orderForm" (ngSubmit)="save()">
+  <!--Medio pago-->
+  <div class="form-group">
+    <label>Método de pago</label>
+    <select class="form-control" formControlName="paymentType">
+      <option value="null" selected disabled>
+        Seleccione un método de pago
+      </option>
+      @for ( pay of paymentType; track $index) {
+      <option [value]="pay.id">{{ pay.desc }}</option>
+      }
+    </select>
+  </div>
+
+  <!--Clientesss-->
+
+  <div class="form-group">
+    <label>Cliente</label>
+    <select class="form-control" formControlName="clientId">
+      <option value="null" selected disabled>Seleccione un cliente</option>
+      @for (itemProduct of customers; track $index) {
+      <option value="{{ itemProduct.clientId }}">{{ itemProduct.name }}</option>
+      }
+    </select>
+  </div>
+
+  <!-- Productos-->
+
+  <div class="form-group">
+    <label>Producto</label>
+    <div class="input-group mb-3">
+      <select class="form-control" formControlName="productId">
+        <option value="null" selected disabled>Seleccione un producto</option>
+        @for (itemProduct of products; track $index) {
+        <option value="{{ itemProduct.productId }}">
+          {{ itemProduct.name }}
+        </option>
+        }
+      </select>
+      <div class="input-group-prepend">
+        <button (click)="addItem()" class="btn btn-outline-secondary" type="button">
+          Agregar
+        </button>
+      </div>
+    </div>
+  </div>
+</form>
+@if (error) {
+<p style="color:#FF0000">Sin Stock</p>
+}@else{
+
+}
+<table *ngIf="orderDetails.length > 0" class="table mt-5 mb-3">
+  <thead>
+    <tr>
+      <th style="width: 30px"></th>
+      <th>Item</th>
+      <th style="width: 120px" class="text-right">Precio</th>
+      <th style="width: 120px" class="text-right">Cantidad</th>
+      <th style="width: 150px" class="text-right">SubTotal</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (item of orderDetails; track $index) {
+    <tr>
+      <td>
+        <button (click)="removeItem(item.productId)" class="btn btn-danger">X</button>
+      </td>
+      <td>{{ item.name }}</td>
+      <td class="text-right">{{ item.price | currency }}</td>
+
+      <td class="text-right">
+        <input type="number" [(ngModel)]="item.quantity" value="1" min="1" max="5" />
+      </td>
+
+      <td class="text-right">
+        {{item.price! * item.quantity | currency}}
+      </td>
+    </tr>
+
+    }
+  </tbody>
+  <tfoot>
+    <tr>
+      <td colspan="4"></td>
+      <td class="text-right" style="font-size: 1.2em">
+        Total {{ total() | currency }}
+      </td>
+    </tr>
+  </tfoot>
+</table>
+
+<!-- <div *ngIf="
+    orderDetails.length > 0 &&
+    this.currentOrder.paymentType !== null &&
+    this.currentOrder.clientId
+  " class="text-center">
+  <button (click)="save()" type="button" class="btn btn-primary btn-block text-light btn-lg">
+    Crear orden
+  </button>
+</div> -->
+
+
+<div class="text-center">
+  <button (click)="save()" type="button" class="btn btn-primary btn-block text-light btn-lg">
+    Crear orden
+  </button>
+</div>
+
+}@else {
+
+<div class="text-center mt-5 mb-5 display-4">
+  <div>.. procesando la orden ..</div>
+</div>
+
+
+
+}

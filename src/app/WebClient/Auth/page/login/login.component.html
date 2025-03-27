@@ -1,0 +1,23 @@
+<div class="col-4 offset-4">
+  <div class="text-center" style="margin-top:40%;">
+      <img src="../../../../../assets/logo.png" />
+  </div>
+  <hr />
+
+  <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+
+
+         @if (isErrorAcesso) {<div class="alert alert-danger" >Acceso denegado</div> }
+
+      <div class="form-group">
+          <input  type="email"  class="form-control" placeholder="E-mail"  formControlName="email">
+      </div>
+      <div class="form-group">
+          <input type="password"  class="form-control" placeholder="Password" formControlName="password">
+      </div>
+
+      <div class="form-group">
+          <button type="submit" class="btn btn-primary btn-block">Log in</button>
+      </div>
+  </form>
+</div>
